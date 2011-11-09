@@ -1,0 +1,10 @@
+<?php
+/* 
+ *  Implements hook_entity_load
+ */
+function media_timestamp_entity_load($entities, $type){
+  //dsm($entities);
+  //dsm($type);   
+  if($type == 'file')
+    drupal_add_js(drupal_get_path('module', 'media_timestamp') . '/media_timestamp.js');
+}
