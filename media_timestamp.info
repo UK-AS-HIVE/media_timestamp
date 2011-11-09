@@ -1,0 +1,7 @@
+name = Media Timestamp
+description = Javascript plugin that inserts timestamps into the transcription of media, and allows for timed linking.
+dependencies[] = media
+dependencies[] = mediaelement
+package = Media
+core = 7.x
+files[] = media_timestamp.module
