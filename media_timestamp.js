@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
 
 	// use a slight delay to make sure everything else has executed already
 	setTimeout(function() {
-		var player = new MediaElementPlayer(jQuery('video')[0]);
+		var player = new MediaElementPlayer(jQuery('video,audio')[0]);
 			
 		player.media.play();
 
@@ -61,7 +61,7 @@ jQuery(document).ready(function() {
 					'left': (time*parseInt(timerail_width)*1.0/duration)+'px',
 					'bottom': '-14px'});
 				
-				jQuery(this).replaceWith('<a href="#" onclick="jQuery(\'video\')[0].player.setCurrentTime('+time+');return false;" class="timestamp" timestamp="' + time + '">' + index + '</a>');
+				jQuery(this).replaceWith('<a href="#" onclick="jQuery(\'video,audio\')[0].player.setCurrentTime('+time+');return false;" class="timestamp" timestamp="' + time + '">' + index + '</a>');
 			});
 		});
 	}, 500);
