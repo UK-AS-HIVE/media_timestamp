@@ -9,36 +9,20 @@ jQuery(document).ready(function() {
 	}
 
 	// use a slight delay to make sure everything else has executed already
-	setTimeout(function() {
+	function initMedia() {
 		var player = new MediaElementPlayer(jQuery('video,audio')[0]);
 			
 		player.media.play();
 
 		// TODO: make sure this works... some FLV lack proper metadata!
-		//var duration = player.media.duration;
-		var duration = 319; // for mockup purposes of EasterCemetaryVisit.mov
-
-		setInterval(function() {
-				// TODO: implement scrolling to keep track of time
-				//console.log('play position: ' + player.media.currentTime + ' of ' + player.media.duration);
-				// TODO: div.scrollable text should be a text render style ideally - currently implemented directly in theme templates
-				var currentTime = player.media.currentTime;
-				jQuery('.scrolling-text').each(function(index, el) {
-					el.timestamps = jQuery(el).find('a.timestamp');
-					el.prevTs = null;
-					el.timestamps.each(function(ti,tel) {
-						if (parseInt(jQuery(tel).attr('timestamp')) <= currentTime)
-						{
-							el.prevTs = jQuery(tel);
-						}
-					});
-					if (el.prevTs !== null)
-					{
-						jQuery(el).animate({scrollTop: el.prevTs.position().top + jQuery(el).scrollTop() - jQuery(el).position().top }, 900);
-					}
-
-				});
-		}, 1000);
+		var duration = player.media.duration;
+		if (isNaN(duration) || duration == 0)
+		{
+			// try again once there's a real duration
+			setTimeout(initMedia, 500);
+			return;
+		}
+		//var duration = 319; // for mockup purposes of EasterCemetaryVisit.mov
 
 		// find timestamps and convert them to links
 		var timerail = jQuery('.mejs-time-rail');
@@ -63,7 +47,38 @@ jQuery(document).ready(function() {
 				
 				jQuery(this).replaceWith('<a href="#" onclick="jQuery(\'video,audio\')[0].player.setCurrentTime('+time+');return false;" class="timestamp" timestamp="' + time + '">' + index + '</a>');
 			});
+
+			// bind scroll event to detect manual scrolling
+			jQuery(scrollTextEl).scroll(function(e) {
+				console.log('scrolling animated: ' + jQuery(e).is(':animated'));
+			});
 		});
-	}, 500);
+
+
+		// begin autoscrolling behavior
+		setInterval(function() {
+				// TODO: implement scrolling to keep track of time
+				//console.log('play position: ' + player.media.currentTime + ' of ' + player.media.duration);
+				// TODO: div.scrollable text should be a text render style ideally - currently implemented directly in theme templates
+				var currentTime = player.media.currentTime;
+				jQuery('.scrolling-text').each(function(index, el) {
+					el.timestamps = jQuery(el).find('a.timestamp');
+					el.prevTs = null;
+					el.timestamps.each(function(ti,tel) {
+						if (parseInt(jQuery(tel).attr('timestamp')) <= currentTime)
+						{
+							el.prevTs = jQuery(tel);
+						}
+					});
+					if (el.prevTs !== null)
+					{
+						jQuery(el).animate({scrollTop: el.prevTs.position().top + jQuery(el).scrollTop() - jQuery(el).position().top }, 900);
+					}
+
+				});
+		}, 1000);
+	}
+	setTimeout(initMedia, 500);
+
 });
 
