@@ -49,19 +49,23 @@ jQuery(document).ready(function() {
 			});
 
 			// bind scroll event to detect manual scrolling
-			jQuery(scrollTextEl).scroll(function(e) {
-				console.log('scrolling animated: ' + jQuery(e).is(':animated'));
+			jQuery(scrollTextEl).hover(
+			function(e) {
+				jQuery(e.currentTarget).attr('pauseScrolling', 1);
+			},
+			function(e) {
+				jQuery(e.currentTarget).attr('pauseScrolling', 0);
 			});
 		});
 
 
 		// begin autoscrolling behavior
 		setInterval(function() {
-				// TODO: implement scrolling to keep track of time
-				//console.log('play position: ' + player.media.currentTime + ' of ' + player.media.duration);
 				// TODO: div.scrollable text should be a text render style ideally - currently implemented directly in theme templates
 				var currentTime = player.media.currentTime;
 				jQuery('.scrolling-text').each(function(index, el) {
+					if (jQuery(el).attr('pauseScrolling') == 1)
+						return;
 					el.timestamps = jQuery(el).find('a.timestamp');
 					el.prevTs = null;
 					el.timestamps.each(function(ti,tel) {
