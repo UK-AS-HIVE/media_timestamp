@@ -10,9 +10,13 @@ jQuery(document).ready(function() {
 
 	// use a slight delay to make sure everything else has executed already
 	function initMedia() {
-		var player = new MediaElementPlayer(jQuery('video,audio')[0]);
+		var player = mejs.players[0];
 			
-		player.media.play();
+		if (!player.media.playing)
+		{
+			player.media.playing = true;
+			player.media.play();
+		}
 
 		// TODO: make sure this works... some FLV lack proper metadata!
 		var duration = player.media.duration;
