@@ -26,6 +26,9 @@ jQuery(document).ready(function() {
 			setTimeout(initMedia, 500);
 			return;
 		}
+
+		player.media.pause();
+
 		//var duration = 319; // for mockup purposes of EasterCemetaryVisit.mov
 
 		// find timestamps and convert them to links
