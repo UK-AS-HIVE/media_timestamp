@@ -5,7 +5,7 @@ jQuery(document).ready(function() {
 	function convertTimestampToTime(timestampString)
 	{
 		var hms = timestampString.split(',')[0].split(':');
-		return parseInt(hms[2]) + 60*parseInt(hms[1]) + 3600*parseInt(hms[0]);
+		return parseInt(hms[2]) + 60*parseFloat(hms[1]) + 3600*parseFloat(hms[0]);
 	}
 
 	// use a slight delay to make sure everything else has executed already
